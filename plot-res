@@ -1,0 +1,44 @@
+#!/bin/bash
+
+export output=$1
+shift
+export title=$1
+shift
+export files=$@
+
+# set the correct column
+if [[ ${title} == *"Throughput"* ]]; then
+	col=3
+elif [[ ${title} == *"Update"* ]]; then
+	col=8
+else 
+	if [[ ${title} == *"Omid"* ]]; then
+		col=9
+	else
+		col=10
+	fi
+fi
+
+unset outfiles
+unset lables
+n=0
+for i in ${files}; do
+	~/bin/extract $i > ${i%txt}out
+	outfiles="${outfiles} ${i%txt}out"
+	tmp=${i%.txt}
+	labels="${labels} ${tmp##*threads}"
+	(( n++ ))
+done;
+
+echo ${outfiles}
+
+gnuplot -persist << EOF
+	set title "${title}"
+	set terminal pngcairo
+	set output "${output}"
+	datafiles="${outfiles}"
+	labels="${labels}"
+	plot for [i=1:${n}] word(datafiles,i) using 1:${col} with linespoints title word(labels,i)." threads"
+EOF
+
+ 

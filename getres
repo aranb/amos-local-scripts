@@ -1,0 +1,11 @@
+#!/bin/bash
+
+ssh -T master <<EOF
+	cd ~/out
+	zip outmaster *[^zip]
+EOF
+
+scp @master:~/out/outmaster.zip ~/out-master
+cd ~/out-master
+unzip outmaster
+

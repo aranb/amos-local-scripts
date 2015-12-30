@@ -1,0 +1,10 @@
+#!/bin/bash
+
+list=$@
+~/bin/plot-colVsThroughput commitVsThroughput.png 4 "Commit Latency" ${list[*]}
+~/bin/plot-colVsThreads commitVsThread.png 4 "Commit Latency" ${list[*]}
+~/bin/plot-colVsThroughput updateVsThroughput.png 5 "Update Latency" ${list[*]}
+~/bin/plot-colVsThreads updateVsThreads.png 5 "Update Latency" ${list[*]}
+~/bin/plot-colVsThroughput startVsThroughput.png 3 "Start Latency" ${list[*]}
+~/bin/plot-colVsThreads startVsThreads.png 3 "Start Latency" ${list[*]}
+

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+export output=$1
+shift
+export prefixes=$@
+
+unset outfiles
+for i in ${prefixes}; do
+	pos=$[${#i}];
+	echo "" > $i.out
+	for j in $( ls $i*.txt | sort -n -k1.$[${pos}+1] ); do
+		tmp=${j:${pos}}
+		echo ${tmp%.txt} " " `~/bin/extract $j | ~/bin/summarize` >> $i.out
+	done;
+	outfiles=(${outfiles[@]} ${i}.out) 
+done;
+
+gnuplot -persist << EOF
+	datafiles="${outfiles}"
+	set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5   # --- blue
+	set style line 2 lc rgb '#dd181f' lt 1 lw 2 pt 5 ps 1.5   # --- red
+	set key left top
+	set xlabel 'Threads'
+	set ylabel 'Throughput [ops/sec]'
+	set terminal svg
+	set output "${output}.svg"
+	plot 	"${outfiles[0]}" using 1:2 with linespoints ls 1 title "Amos",\
+		"${outfiles[1]}" using 1:2 with linespoints ls 2 title "Omid"
+EOF
+ 

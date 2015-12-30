@@ -1,0 +1,37 @@
+#!/bin/bash
+
+gnuplot -persist << EOF
+	set terminal pngcairo size 768,640 enhanced font 'Calibri,16'
+	set output "$1"
+	set style line 1 lc rgb '#0060ad' lt 1 lw 4 pt 7 ps 1.5   # --- blue
+	set style line 2 lc rgb '#dd181f' lt 1 lw 4 pt 5 ps 1.5   # --- red
+	set style line 3 lc rgb '#77ac30' lt 1 lw 4 pt 4 ps 1.5   # --- green
+	set key right top
+	set xlabel 'Throughput [ops/sec]'
+	set ylabel 'Latency [ms]'
+	set title  'Amos vs. Omid - Write'
+	set yrange [0:70]
+
+	set multiplot
+
+	plot 	"test-thread-b1K-tout1ms-threads.out" using 2:(column(9)/1000) with linespoints ls 1 title "Amos",\
+		"omid-threads-notout-threads.out" using 2:(column(10)/1000) with linespoints ls 2 title "Omid, no timeout",\
+		"orig-threads-b1K-tout1ms-threads.out" using 2:(column(10)/1000) with linespoints ls 3 title "Omid, T_{out}=1ms"
+
+	#set the position for the zoom plot
+	set origin 0.3,0.2
+	set size 0.6,0.5
+	set xrange [90:700]
+	set yrange [0:16]
+	unset xlabel
+	unset ylabel
+	unset key
+	unset title
+
+	plot    "test-thread-b1K-tout1ms-threads.out" using 2:(column(9)/1000) with linespoints ls 1 title "Amos",\
+                "omid-threads-notout-threads.out" using 2:(column(10)/1000) with linespoints ls 2 title "Omid, no timeout",\
+                "orig-threads-b1K-tout1ms-threads.out" using 2:(column(10)/1000) with linespoints ls 3 title "Omid, T_{out}=1ms"	
+
+	unset multiplot
+EOF
+ 

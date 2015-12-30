@@ -1,0 +1,21 @@
+#!/bin/bash
+
+export prefixes=$@
+heading="# Parameter,Throughput,START,COMMIT,UPDATE,READ,SINGLETON,SINGLETON READ,SINGLETON UPDATE,TRANSACTION"
+
+if [ "$#" -lt 1 ]
+then
+	echo "Usage: `basename $0` <list of prefixes of experiments>"
+	exit 1
+fi
+
+for i in ${prefixes}; do
+	pos=$[${#i}];
+	echo "$heading" > $i.out
+	for j in $( ls $i*.txt | sort -n -k1.$[${pos}+1] ); do
+		tmp=${j:${pos}}
+		echo ${tmp%.txt} " " `~/bin/extract $j | ~/bin/summarize` >> $i.out
+	done;
+done;
+
+ 

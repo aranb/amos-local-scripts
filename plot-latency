@@ -1,0 +1,17 @@
+#!/bin/bash
+
+gnuplot -persist << EOF
+	set terminal svg enhanced
+	set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5   # --- blue
+	set style line 2 lc rgb '#dd181f' lt 1 lw 2 pt 5 ps 1.5   # --- red
+	set key left top
+	set xlabel 'Throughput [ops/sec]'
+	set ylabel 'Latency [µsec]'
+	set output 'SingletonLatency-RateVsThreads.svg'
+	plot 	"test-rate-b1K-tout1ms-rate.out" using 2:9 with linespoints ls 1 title "Rate",\
+		"test-thread-b1K-tout1ms-threads.out" using 2:9 with linespoints ls 2 title "Threads"
+	set output 'TxnLaetncy-RateVsThreads-notout.svg'
+	plot    "orig-rate-b1K-tout1ms-rate.out" using 2:10 with linespoints ls 1 title "Rate",\
+                "omid-threads-notout-threads.out" using 2:10 with linespoints ls 2 title "Threads"
+EOF
+ 
