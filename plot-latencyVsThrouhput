@@ -40,7 +40,7 @@ gnuplot -persist << EOF
 	set style line 2 lt 1 lc rgb '#a2142f' lw 2 pt 11 ps 1.5 # red
 	#set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 7 ps 1.5   # --- blue
 	#set style line 2 lc rgb '#dd181f' lt 1 lw 2 pt 5 ps 1.5   # --- red
-	set key right top
+	set key left top
 	set xlabel "Throughput"
 	set ylabel 'Latency [us]'
 	set title "${title}"

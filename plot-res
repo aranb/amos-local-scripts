@@ -23,7 +23,7 @@ unset outfiles
 unset lables
 n=0
 for i in ${files}; do
-	~/bin/extract $i > ${i%txt}out
+	extract $i > ${i%txt}out
 	outfiles="${outfiles} ${i%txt}out"
 	tmp=${i%.txt}
 	labels="${labels} ${tmp##*threads}"

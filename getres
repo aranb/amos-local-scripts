@@ -1,11 +1,16 @@
 #!/bin/bash
 
-ssh -T master <<EOF
-	cd ~/out
-	zip outmaster *[^zip]
-EOF
+remote="aranb@users.emulab.net"
+remote_dir="/proj/End2end/loctx/out/"
 
-scp @master:~/out/outmaster.zip ~/out-master
-cd ~/out-master
-unzip outmaster
+rsync -zav ${remote}:${remote_dir} ${HOME}/out-emulab
+
+#ssh -T ${remote} <<EOF
+#	cd ${remote_dir}
+#	zip outmaster *[^zip]
+#EOF
+
+#scp ${remote}:${remote_dir}/outmaster.zip ~/out-emulab
+#cd ~/out-emulab
+#unzip outmaster
 

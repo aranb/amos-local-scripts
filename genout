@@ -14,7 +14,7 @@ for i in ${prefixes}; do
 	echo "$heading" > $i.out
 	for j in $( ls $i*.txt | sort -n -k1.$[${pos}+1] ); do
 		tmp=${j:${pos}}
-		echo ${tmp%.txt} " " `~/bin/extract $j | ~/bin/summarize` >> $i.out
+		echo ${tmp%.txt} " " `extract $j | summarize` >> $i.out
 	done;
 done;
 
