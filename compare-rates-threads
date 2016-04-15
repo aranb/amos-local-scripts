@@ -1,0 +1,9 @@
+#!/bin/bash
+
+perfnum=$#
+prefixes=$@
+
+for i in ${prefixes}; do
+	~/git/amos-local-scripts/plot-latencyVsThroughput comp-${i}.png "Compare ${i}" target:${i}_rates1Ru3Rc-rates threads:${i}_1Ru3Rc-threads
+done;
+

@@ -13,6 +13,8 @@ export prefnum=$#
 export prefixes=$@
 export col=7 # Singleton Latency column
 export txncol=10 # Transaction Latency column
+export updatecol=5
+export readcol=6
 
 unset outfiles
 for i in ${prefixes}; do
@@ -23,7 +25,20 @@ for i in ${prefixes}; do
 	else
 		curcol=$col
 	fi
+	if [[ ${i%%:*} == *"HBase"* ]]; then
+		if [[ ${i%%:*} == *"Read"* ]]; then
+			curcol=$readcol
+		else
+			curcol=$updatecol
+		fi
+	fi
 	cols="${cols[@]} $curcol"
+	if [[ ${i%%:*} == *"Mix"* ]]; then
+		th_div=2
+	else	
+		th_div=2
+	fi
+	th_divs="${th_divs[@]} $th_div"
 done;
 
 
@@ -31,6 +46,7 @@ gnuplot -persist << EOF
 	outfiles="${outfiles}"
 	labels="${labels}"
 	cols="${cols}"
+	th_divs="${th_divs}"
 	set style line 1 lt 1 lc rgb '#0072bd' lw 2 pt 5 ps 1.5 # blue
 	set style line 6 lt 1 lc rgb '#d95319' lw 2 pt 6 ps 1.5 # orange
 	set style line 5 lt 1 lc rgb '#edb120' lw 2 pt 7 ps 1.5 # yellow
@@ -48,6 +64,6 @@ gnuplot -persist << EOF
 	set output "${output}"
 	#set yrange [:5]
 	#set xrange [:600]
-	plot for [i=1:${prefnum}] word(outfiles,i) using 2:0+word(cols,i) with linespoints ls i title word(labels,i)
+	plot for [i=1:${prefnum}] word(outfiles,i) using (\$2/word(th_divs,i)):0+word(cols,i) with linespoints ls i title word(labels,i)
 EOF
  

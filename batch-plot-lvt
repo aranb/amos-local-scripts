@@ -1,0 +1,7 @@
+#!/bin/bash
+
+suffix=$1 #"1Ru2Rc10G"
+
+plot-latencyVsThroughput threads-update-${suffix}.png "Write Latency vs. Throughput - using threads" L/T\(100/0\):amosSingletonUpdate_${suffix}-threads T/L\(100/0\)-Txn:amosTxnUpdate_${suffix}-threads Mix-L/T\(50/50\):amosMixUpdate_${suffix}-threads Mix-T/L\(50/50\)-Txn:amosMixUpdate_${suffix}-threads Omid-Txn:omidTxnUpdate_${suffix}-threads HBase-Update:hbaseUpdate_${suffix}-threads
+plot-latencyVsThroughput threads-read-${suffix}.png "Read Latency vs. Throughput - using threads" L/T\(100/0\):amosSingletonRead_${suffix}-threads T/L\(100/0\)-Txn:amosTxnRead_${suffix}-threads Mix-L/T\(50/50\):amosMixRead_${suffix}-threads Mix-T/L\(50/50\)-Txn:amosMixRead_${suffix}-threads Omid-Txn:omidTxnRead_${suffix}-threads HBase-Read:hbaseRead_${suffix}-threads
+

@@ -24,8 +24,8 @@ tso)
 scp ~/git/omid/tso-server/target/tso-server-*-bin.tar.gz ${TARGET_HOST}:${PDIR}
 ;;
 all)
-./update-cluster.sh hbase
-./update-cluster.sh tso
-./update-cluster.sh ycsb
+update-cluster.sh hbase
+update-cluster.sh tso
+update-cluster.sh ycsb
 ;;
 esac	

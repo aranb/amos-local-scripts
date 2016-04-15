@@ -9,14 +9,10 @@ export files=$@
 # set the correct column
 if [[ ${title} == *"Throughput"* ]]; then
 	col=3
-elif [[ ${title} == *"Update"* ]]; then
-	col=8
+elif [[ ${title} == *"Txn"* ]]; then
+	col=9
 else 
-	if [[ ${title} == *"Omid"* ]]; then
-		col=9
-	else
-		col=10
-	fi
+	col=6
 fi
 
 unset outfiles
@@ -38,6 +34,9 @@ gnuplot -persist << EOF
 	set output "${output}"
 	datafiles="${outfiles}"
 	labels="${labels}"
+	#set key above
+	set key off
+	#set yrange [:20000]
 	plot for [i=1:${n}] word(datafiles,i) using 1:${col} with linespoints title word(labels,i)." threads"
 EOF
 
